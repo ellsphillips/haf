@@ -1,0 +1,95 @@
+\makeatletter
+
+\pgfkeys{
+	/haf/AutoColumns/.cd,
+	total width/.store in = \recipes@AutoColumns@width,
+	total width/.default = 1, total width,
+}
+
+
+
+\newcounter{autocolumn} % Track current column index
+\newlength{\autocolumnmaxheight} % Maximum column height
+
+% `column` replacement to measure height
+\newenvironment{@autocolumn}[1]{%
+    \stepcounter{autocolumn}%
+    \begin{lrbox}{\@tempboxa}%
+    \begin{minipage}{#1}%
+}{%
+    \end{minipage}
+    \end{lrbox}
+    \@tempdimc=\dimexpr\ht\@tempboxa+\dp\@tempboxa\relax
+    % Save height of this column:
+    \expandafter\xdef\csname autocolumn@height@\roman{autocolumn}\endcsname{\the\@tempdimc}%
+    % Save maximum height
+    \ifdim\@tempdimc>\autocolumnmaxheight
+        \global\autocolumnmaxheight=\@tempdimc
+    \fi
+}
+
+% `column` wrapper which sets the height beforehand
+\newenvironment{@@autocolumn}[1]{%
+    \stepcounter{autocolumn}%
+    % The \autoheight macro contains a \vspace macro with the maximum height minus the natural column height
+    \edef\autoheight{\noexpand\vspace*{\dimexpr\autocolumnmaxheight-\csname autocolumn@height@\roman{autocolumn}\endcsname\relax}}%
+    % Call original `column`:
+    \orig@column{#1}%
+}{%
+    \endorig@column
+}
+
+% Save orignal `column` environment away
+\let\orig@column\column
+\let\endorig@column\endcolumn
+
+% `columns` variant with automatic height adjustment
+\NewEnviron{AutoColumns}[1][]{%
+	\tikzset{/haf/AutoColumns/.cd,#1}%
+    % Init vars:
+    \setcounter{autocolumn}{0}%
+    \setlength{\autocolumnmaxheight}{0pt}%
+    \def\autoheight{\vspace*{0pt}}%
+    % Set `column` environment to special measuring environment
+    \let\column\@autocolumn%
+    \let\endcolumn\end@autocolumn%
+    \BODY% measure heights
+    % Reset counter for second processing round
+    \setcounter{autocolumn}{0}%
+    % Set `column` environment to wrapper
+    \let\column\@@autocolumn%
+    \let\endcolumn\end@@autocolumn%
+    % Finally process columns now for real
+    \vskip-1cm%
+    \begin{columns}[%
+    	T,
+    	totalwidth=\recipes@AutoColumns@width\rcpwidth,
+    ]%
+        \BODY%
+    \end{columns}%
+}
+
+
+
+\pgfkeys{
+	/haf/column/.is family,
+	/haf/column/.cd,
+	width/.store in=\recipes@column@width,
+	width/.default={0.5}, width,
+}
+
+\NewEnviron{Column}[1][]{%
+	\tikzset{/haf/column/.cd,#1}%
+	\begin{column}{\recipes@column@width\linewidth-.5\rcpspace}%
+		\ifrcpdevelopment
+			\setbeamercolor{rcpcolumn}{fg=black,bg=orange!20}%
+		\else
+			\setbeamercolor{rcpcolumn}{fg=black,bg=white}%
+		\fi
+		\begin{beamercolorbox}[sep=0pt]{rcpcolumn}%
+			\BODY%
+			\autoheight%
+		\end{beamercolorbox}%
+	\end{column}%
+}
+\makeatother

@@ -1,0 +1,67 @@
+\setbeamertemplate{navigation symbols}{}
+
+\newlength{\rcpspace}
+\setlength{\rcpspace}{1in}
+
+\newlength{\rcpmargin}
+\setlength{\rcpmargin}{4in}
+
+\newlength{\rcpwidth}
+\setlength{\rcpwidth}{\dimexpr(\paperwidth - 2\rcpmargin)\relax}
+
+\newlength{\rcpheight}
+\setlength{\rcpheight}{\dimexpr(\paperheight - 2\rcpmargin)\relax}
+
+
+
+\tikzset{
+	haf bounding box/.style={
+		draw,
+		rectangle,
+		minimum width=\paperwidth,
+		minimum height=\paperheight,
+		preaction={fill=pink!10},
+		preaction={
+			pattern={%
+				Lines[%
+					distance=6mm,
+					angle=45,
+					line width=2mm%
+				]%
+			},
+			pattern color=pink!50,
+		},
+		path picture={%
+			\draw[pink!25, thick, fill=white]%
+			([shift={(\rcpmargin,-\rcpmargin)}]path picture bounding box.north west)%
+			rectangle%
+			([shift={(-\rcpmargin,\rcpmargin)}]path picture bounding box.south east);%
+		},
+	}
+}
+
+
+
+\NewEnviron{Page}{%
+	\begin{frame}%
+		\begin{tikzpicture}[overlay, remember picture]%
+			\node[anchor=north west, inner sep=0] (page-content)%
+			at ([shift={(%
+				\rcpmargin,
+				-\rcpmargin%
+			)}]current page.north west) {%
+				\begin{minipage}{\rcpwidth}%
+					\BODY%
+				\end{minipage}%
+			};%
+		%
+			\begin{pgfonlayer}{background}%
+				\ifrcpdevelopment%
+					\node[haf bounding box] at (current page.center) {};
+				%
+					\draw[red, thick] (page-content.north west) rectangle (page-content.south east);
+				\fi%
+			\end{pgfonlayer}%
+		\end{tikzpicture}%
+	\end{frame}%
+}

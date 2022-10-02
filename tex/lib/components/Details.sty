@@ -1,0 +1,25 @@
+\pgfkeys{
+	/recipes/Details/.cd,
+	time/.store in = \recipes@Details@time,
+	time/.default = {}, time,
+	serves/.store in = \recipes@Details@serves,
+	serves/.default = {}, serves,
+}
+
+
+
+\def\styledetailslabel#1{\fontmain{#1}}
+\def\styledetailsvalue#1{\fontmain\bfseries\MakeUppercase{#1}}
+
+\newcommand\Details[1][]{%
+	\tikzset{/recipes/Details/.cd,#1}%
+
+	\!\begin{tabular*}{.5\rcpwidth}{%
+			V{10\rcpspace}%
+			@{\extracolsep{2\rcpspace}}%
+			V{10\rcpspace}%
+		}%
+		\styledetailslabel{COOK TIME:} & \styledetailslabel{SERVES:} \\%
+		\styledetailsvalue{\recipes@Details@time} & \styledetailsvalue{\recipes@Details@serves} \\%
+	\end{tabular*}%
+}

@@ -1,0 +1,27 @@
+\pgfkeys{
+	/haf/Steps/.cd,
+	width/.store in = \haf@Steps@width,
+	width/.default = \linewidth, width,
+}
+
+
+
+\setlist[enumerate]{%
+	label={%
+		\protect\color{grey-100}\bfseries\arabic*\;%
+	},
+	itemsep=1em,%
+}
+
+\NewEnviron{Steps}[1][]{%
+	\tikzset{/haf/Steps/.cd,#1}%
+	\fontsize{36pt}{36pt}\selectfont%
+	\color{grey-75}%
+	\fontmain%
+	\begin{varwidth}{\haf@Steps@width}%
+		\begin{enumerate}
+			\justifying%
+			\BODY%
+		\end{enumerate}
+	\end{varwidth}%
+}

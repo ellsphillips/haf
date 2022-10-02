@@ -1,0 +1,21 @@
+\begin{Page}
+
+	\Rounded{%
+		\begin{tikzpicture}%
+			\node[%
+				rectangle,
+				minimum width=\rcpwidth,
+				minimum height=\rcpheight,
+				text=white,
+				path picture={%
+					\node at (path picture bounding box.north west){%
+						\includegraphics[height=\rcpheight]{img/cover}%
+					};
+				},
+			]{%
+				% Text
+			};
+		\end{tikzpicture}
+	}
+	
+\end{Page}

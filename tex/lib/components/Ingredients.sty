@@ -1,0 +1,21 @@
+\pgfkeys{
+	/haf/Ingredients/.cd,
+	indent/.store in = \haf@Ingredients@indent,
+	indent/.default = .5em, indent,
+}
+
+
+
+\NewEnviron{Ingredients}[1][]{%
+	\tikzset{/haf/Ingredients/.cd,#1}%
+	\fontsize{36pt}{36pt}\selectfont%
+	\color{grey-75}%
+	\begin{varwidth}{\linewidth}%
+		\raggedright%
+		\begin{description}[leftmargin=\haf@Ingredients@indent]
+			\setlength\itemsep{1em}%
+			\setlength{\itemindent}{-\haf@Ingredients@indent}%
+			\BODY%
+		\end{description}
+	\end{varwidth}%
+}

@@ -1,0 +1,21 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\RequirePackage{etex}
+
+
+\documentclass[%
+%	development,
+]{recipes}
+
+\title{{{\@author}}'s Recipes}
+\author{ellsphillips}
+\date{\currentmonthyear}
+
+\begin{document}
+
+    \input{src/frontcover}%
+    \input{src/inner}%
+    \input{src/{{recipe}}}%
+
+\end{document}

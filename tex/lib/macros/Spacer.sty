@@ -1,0 +1,38 @@
+\pgfkeys{
+	/recipes/Spacer/.cd,
+	height/.store in=\recipes@Spacer@height,
+	height/.default={\rcpspace}, height,
+}
+
+
+
+\tikzset{
+	spacer hatch/.style={
+		inner sep=0,
+		outer sep=0,
+		pattern={%
+			Lines[%
+				distance=6mm,
+				angle=45,
+				line width=2mm%
+			]%
+		},
+		pattern color=pink,
+	},
+	spacer empty/.style={
+		inner sep=0,
+		outer sep=0,
+		fill=none,
+	}
+}
+
+
+
+\newcommand{\Spacer}[1][]{%
+	\pgfkeys{/recipes/Spacer/.cd,#1}%
+	\ifrcpdevelopment
+		\tikz\fill[spacer hatch] (0,0) rectangle (\linewidth,\recipes@Spacer@height);
+	\else
+		\tikz\fill[fill=none] (0,0) rectangle (\linewidth,\recipes@Spacer@height);
+	\fi
+}

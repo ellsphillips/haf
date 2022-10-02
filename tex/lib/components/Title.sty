@@ -1,0 +1,24 @@
+\pgfkeys{
+	/haf/Title/.cd,
+	alignment/.store in=\haf@Title@alignment,
+	alignment/.default=\raggedright, alignment,
+	after skip/.store in=\haf@Title@afterSkip,
+	after skip/.default=\nlmargin, after skip,
+	ref/.store in=\haf@Title@ref,
+	ref/.default={foreword}, ref,
+}
+
+
+
+\newcommand{\Title}[2][]{%
+	\tikzset{/haf/Title/.cd,#1}%
+	\vskip-1.25\baselineskip%
+	\raisebox{2.6\ht\strutbox}{\hypertarget{\haf@Title@ref}{}}%
+	\parbox{\linewidth}{%
+		\fontsize{50pt}{32pt}\selectfont%
+		\color{main-bg}\bfseries%
+		\haf@Title@alignment%
+		\MakeUppercase{#2}%
+	}%
+	\vskip\haf@Title@afterSkip%
+}

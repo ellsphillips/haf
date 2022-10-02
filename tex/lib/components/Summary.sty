@@ -1,0 +1,17 @@
+\pgfkeys{
+	/haf/Summary/.cd,
+	width/.store in = \haf@Summary@width,
+	width/.default = \rcpwidth, width,
+}
+
+
+
+\NewEnviron{Summary}[1][]{%
+	\tikzset{/haf/Summary/.cd,#1}%
+	\begin{varwidth}{\haf@Summary@width}%
+		\justify%
+		\fontmain%
+		\fontsize{50pt}{50pt}\selectfont%
+		\BODY%
+	\end{varwidth}%
+}

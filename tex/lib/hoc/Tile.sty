@@ -1,0 +1,36 @@
+\pgfkeys{
+	/haf/Tile/.cd,
+	bg/.store in=\haf@Tile@bg,
+	bg/.default={main-bg!10}, bg,
+	fg/.store in=\haf@Tile@fg,
+	fg/.default={grey-100}, fg,
+	width/.store in=\haf@Tile@width,
+	width/.default=\linewidth, width,
+	padding/.store in=\haf@Tile@padding,
+	padding/.default={1cm}, padding,
+}
+
+
+
+\NewEnviron{Tile}[1][]{%
+	\tikzset{/haf/Tile/.cd,#1}%
+	\begin{tikzpicture}%
+		\node[anchor = north west] (content) {%
+			\color{\haf@Tile@fg}%
+			\begin{varwidth}{%
+				\haf@Tile@width%
+				-\haf@Tile@padding%
+				-\haf@Tile@padding%
+			}%
+				\BODY%
+			\end{varwidth}%
+		};%
+	%
+		\begin{pgfonlayer}{middle}%
+			\fill[\haf@Tile@bg, rounded corners = 1cm]%
+			([shift = {(-\haf@Tile@padding,\haf@Tile@padding)}]content.north west)%
+			rectangle%
+			([shift = {(\haf@Tile@padding,-\haf@Tile@padding)}]content.south east);%
+		\end{pgfonlayer}%
+	\end{tikzpicture}
+}

@@ -1,0 +1,21 @@
+\pgfkeys{%
+	/haf/Title/.cd,
+	after skip/.store in=\recipes@Title@afterSkip,
+	after skip/.default=\rcpspace, after skip,
+	ref/.store in=\recipes@Title@ref,
+	ref/.default={foreword}, ref,
+}
+
+
+
+\newcommand{\Title}[2][]{%
+	\tikzset{/haf/Title/.cd,#1}%
+	\vskip-1.25\baselineskip%
+	\raisebox{2.6\ht\strutbox}{\hypertarget{\recipes@Title@ref}{}}%
+	\parbox{\linewidth}{%
+		\fonttitle%
+		\color{main-bg}%\bfseries%
+		#2%
+	}%
+	\vskip\recipes@Title@afterSkip%
+}

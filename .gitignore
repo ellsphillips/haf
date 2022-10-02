@@ -1,0 +1,20 @@
+### Feature implementations
+api/
+data/
+node_modules/
+recipes/
+
+### Assets
+*/**/fonts
+*/**/img
+
+### Auxilliaries/projectiles
+*.log
+*.aux
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk

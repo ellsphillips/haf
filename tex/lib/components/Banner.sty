@@ -1,0 +1,26 @@
+\pgfkeys{
+	/recipes/Banner/.cd,
+	image/.store in=\recipes@Banner@image,
+	image/.default={}, image,
+}
+
+
+
+\newcommand{\Banner}[1][]{%
+	\tikzset{/recipes/Banner/.cd,#1}%
+	\Rounded{%
+		\begin{tikzpicture}%
+			\node[%
+				rectangle,
+				minimum width=\rcpwidth,
+				minimum height=.2\rcpheight,
+				text=white,
+				path picture={%
+					\node at (path picture bounding box.north west){%
+						\includegraphics[width=\rcpwidth]{\recipes@Banner@image}%
+					};
+				},
+			]{};
+		\end{tikzpicture}
+	}
+}
